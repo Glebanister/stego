@@ -3,7 +3,7 @@ COMPILE_FLAGS = -c -Wextra -Werror -g
 SAN_FLAGS = -fsanitize=address
 LINK_FLAGS =
 LINK_SAN_FLAGS = -lasan
-EXE = stego
+EXE = stego.exe
 OBJ = obj
 INCLUDE = include
 SOURCE = src
