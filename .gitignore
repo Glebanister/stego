@@ -1,0 +1,7 @@
+.vscode
+*.bmp
+stego.exe
+obj/
+*.o
+*.txt
+main.py
