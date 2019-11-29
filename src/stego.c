@@ -90,7 +90,8 @@ int handle_insert(int argc, char **argv)
         destroy_image(picture_in);
         return error;
     }
-    write_key(key, key_len);
+    invert_coords(key, key_len, picture_in->h);
+    write_key(key, key_len, key_file);
     free(message);
     free(key);
     destroy_image(picture_in);
@@ -259,5 +260,33 @@ int generate_key(cell_s *key, size_t message_len, size_t width, size_t height)
 
 int write_key(cell_s *key, size_t key_len, char *key_file)
 {
-    
+    assert(key);
+    assert(key_file);
+    FILE *fout = fopen(key_file, "w");
+    for (size_t i = 0; i < key_len; i++)
+    {
+        char color;
+        if (key[i].color == 0)
+        {
+            color = 'b';
+        }
+        else if (key[i].color == 1)
+        {
+            color = 'g';
+        }
+        else if (key[i].color == 2)
+        {
+            color = 'r';
+        }
+        else
+        {
+            assert(0);
+        }
+        if (fprintf(fout, "%ld %ld %c\n", key[i].x, key[i].y, color) < 3)
+        {
+            return ERROR_FILE_WRITING;
+        }
+    }
+    fclose(fout);
+    return 0;
 }
