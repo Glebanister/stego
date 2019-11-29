@@ -72,14 +72,13 @@ int handle_insert(int argc, char **argv)
     }
     size_t message_len = strlen(message);
     size_t key_len = message_len * BITS_PER_LETTER;
-    cell_s *key = malloc(sizeof(cell_s) * key_len);
     image_s *picture_in = load_bmp(in_bmp);
     if (!picture_in)
     {
-        free(key);
         return ERROR_FILE_READING;
     }
-    read_key(key_file, key, key_len);
+    cell_s *key = malloc(sizeof(cell_s) * key_len);
+    generate_key(key, message_len, picture_in->w, picture_in->h);
     invert_coords(key, key_len, picture_in->h);
     fill_cells_with_message(key, message);
     insert_message(key, message_len, picture_in);
@@ -91,6 +90,7 @@ int handle_insert(int argc, char **argv)
         destroy_image(picture_in);
         return error;
     }
+    write_key(key, key_len);
     free(message);
     free(key);
     destroy_image(picture_in);
@@ -245,7 +245,19 @@ int insert_message(cell_s *decoded, size_t message_len, image_s *image)
 }
 
 
-int generate_key(char *key_file, size_t message_len)
+int generate_key(cell_s *key, size_t message_len, size_t width, size_t height)
+{
+    assert(key);
+    for (size_t i = 0; i < message_len * BITS_PER_LETTER; i++)
+    {
+        key[i].color = rand() % 3;
+        key[i].x = rand() % width;
+        key[i].y = rand() % height;
+    }
+    return 0;
+}
+
+int write_key(cell_s *key, size_t key_len, char *key_file)
 {
     
 }

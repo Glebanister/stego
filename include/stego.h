@@ -33,4 +33,6 @@ int extract_message(cell_s *encoded, size_t message_len, char *dest);
 
 int insert_message(cell_s *decoded, size_t message_len, image_s *image);
 
-int generate_key(char *key_file, size_t message_len);
+int generate_key(cell_s *key, size_t message_len, size_t width, size_t height);
+
+int write_key(cell_s *key, size_t key_len, char *key_file);
